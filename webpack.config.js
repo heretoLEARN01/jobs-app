@@ -1,4 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
 const { ModuleFederationPlugin } = require('@module-federation/enhanced');
 const deps = require('./package.json').dependencies;
 
