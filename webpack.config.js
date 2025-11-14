@@ -2,6 +2,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const { ModuleFederationPlugin } = require('@module-federation/enhanced');
 const deps = require('./package.json').dependencies;
+const hostUrl = process.env.HOST_REMOTE || 'http://localhost:3000/remoteEntry.js';
 
 module.exports = {
   entry: './src/index.tsx',
@@ -10,7 +11,7 @@ module.exports = {
   resolve: { extensions: ['.tsx', '.ts', '.js'] },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    publicPath,                    // important for deployed assets
+    publicPath: (process.env.PUBLIC_PATH || '/'),                
     filename: '[name].[contenthash].js',
     clean: true,
   },
@@ -29,7 +30,7 @@ module.exports = {
         'react-dom': { singleton: true, eager: true, requiredVersion: deps['react-dom'] },
       },
         remotes: {
-            hostApp: 'hostApp@http://localhost:3000/remoteEntry.js',
+            hostApp: `hostApp@${hostUrl}`,
         },
     }),
     new HtmlWebpackPlugin({ template: './public/index.html' }),
